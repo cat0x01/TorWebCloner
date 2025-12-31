@@ -3,7 +3,7 @@ import re
 import requests
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
-from colorama import Fore, init
+from colorama import Fore, Style, init
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -11,6 +11,9 @@ from selenium.webdriver.firefox.service import Service
 
 init(autoreset=True)
 
+# =========================
+# START TOR SERVICE
+# =========================
 os.system("sudo service tor start")
 
 # =========================
@@ -25,11 +28,28 @@ visited = set()
 
 # =========================
 def banner():
-    print(Fore.RED + "=" * 50)
-    print(Fore.YELLOW + " TorSiteTool ")
-    print(Fore.CYAN + " 1) Copy site")
-    print(Fore.CYAN + " 2) Screenshot site")
-    print(Fore.RED + "=" * 50)
+    print(Fore.RED + Style.BRIGHT + r"""
+ ████████╗ ██████╗ ██████╗ ███████╗██╗████████╗███████╗
+ ╚══██╔══╝██╔═══██╗██╔══██╗██╔════╝██║╚══██╔══╝██╔════╝
+    ██║   ██║   ██║██████╔╝███████╗██║   ██║   █████╗  
+    ██║   ██║   ██║██╔══██╗╚════██║██║   ██║   ██╔══╝  
+    ██║   ╚██████╔╝██║  ██║███████║██║   ██║   ███████╗
+    ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝   ╚═╝   ╚══════╝
+    """)
+
+ 
+    print(Fore.CYAN + "   Copy .onion sites  |  Screenshot via Tor")
+    print(Fore.RED + "-" * 60)
+
+    print(Fore.GREEN + "  Author     : cat0x01")
+    print(Fore.GREEN + "  X          : https://x.com/cat0x01")
+    print(Fore.GREEN + "  GitHub     : https://github.com/cat0x01")
+    print(Fore.GREEN + "  Instagram  : https://instagram.com/cat0x01")
+
+    print(Fore.RED + "-" * 60)
+    print(Fore.CYAN + "  [1] Copy site")
+    print(Fore.CYAN + "  [2] Screenshot site")
+    print(Fore.RED + "=" * 60)
 
 # =========================
 def clean_name(text):
@@ -114,8 +134,10 @@ def main():
     banner()
 
     choice = input(Fore.YELLOW + "Choose option (1/2): ").strip()
-    target = input(Fore.YELLOW + "Enter .onion URL: ").strip()
 
+    target = input(Fore.YELLOW + "Enter .onion URL: ").strip()
+    
+    
     if not target.startswith("http"):
         target = "http://" + target
 
@@ -130,6 +152,12 @@ def main():
 
     else:
         print(Fore.RED + "[!] Invalid option")
+
+
+
+
+
+
 
 # =========================
 if __name__ == "__main__":
