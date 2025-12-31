@@ -9,6 +9,9 @@ from selenium.webdriver.firefox.options import Options
 
 init(autoreset=True)
 
+os.system("sudo service tor start")
+
+
 # Tor proxy
 proxies = {
     "http": "socks5h://127.0.0.1:9050",
