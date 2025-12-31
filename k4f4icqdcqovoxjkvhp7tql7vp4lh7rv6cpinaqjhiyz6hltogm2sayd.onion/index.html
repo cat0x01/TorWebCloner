@@ -1,0 +1,1319 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log Search</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Advanced log search engine for browsing and analyzing logs from 20+ Info Stellar sources. Fast, accurate, and intelligent search with real-time processing and unlimited results for Pro users.">
+  <meta name="keywords" content="log search, log analysis, data search, log browsing, info stellar, search engine, log files, data extraction, log mining, search logs, log database, log viewer, log explorer, data mining, log processing , hacking , hack , hacks , hackers ,cyber ,proton , mail , group , groups , anonymous , infostealer , info , stealer , privacy , url , pass , username , user, password , test , tester , card , carding , cards , ulp , accounts , account , logins , logs , login , hacking, hacks, hacker, hackers, exploit, exploits, 0day, zero-day, vuln, vulnerability, pentest, pentester, redteam, blueteam logs, logins, login, logins_failed, auth_fail, auth_success, session_id, session_token, access_log, audit_log, evtx, syslog, cloudtrail, auditd password, passwd, plaintext_password, hashed_password, bcrypt, ntlm_hash, smb_hash, credential_leak, brute_force, brute-force, password_reset, two_factor_bypass, mfa_bypass" >
+  <meta name="author" content="Log Search Pro">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  <meta name="revisit-after" content="1 days">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Log Search - Advanced Log Search Engine">
+  <meta property="og:description" content="Powerful log search engine for browsing and analyzing logs from 20+ Info Stellar sources. Fast, accurate, and intelligent search capabilities.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://k4f4icqdcqovoxjkvhp7tql7vp4lh7rv6cpinaqjhiyz6hltogm2sayd.onion/">
+  <meta property="og:site_name" content="Log Search">
+  <meta property="og:locale" content="en_US">
+  
+  
+
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="http://k4f4icqdcqovoxjkvhp7tql7vp4lh7rv6cpinaqjhiyz6hltogm2sayd.onion/">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: linear-gradient(135deg, #0a0a0a, #1e1e1e, #0f0f0f);
+      color: #f8fafc;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(25, 25, 25, 0.95));
+      backdrop-filter: blur(25px);
+      border-bottom: 2px solid transparent;
+      background-clip: padding-box;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      display: block !important;
+      height: 80px;
+      visibility: visible;
+      opacity: 1;
+    }
+    .navbar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        #ffd700 50%, 
+        transparent 100%);
+      opacity: 0.6;
+    }
+    .navbar-container {
+      width: 100%;
+      max-width: 100%;
+      padding: 0.8rem 2rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
+      height: 100%;
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: #ffd700;
+      font-weight: 700;
+      font-size: 1.3rem;
+      transition: all 0.3s ease;
+      padding: 0.5rem 0;
+    }
+    .navbar-brand:hover {
+      color: #fbbf24;
+      transform: translateY(-1px);
+    }
+    .navbar-nav {
+      display: flex;
+      flex-direction: row;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 2rem;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: #f8fafc;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #ffd700;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: #ffd700;
+    }
+    .nav-link.active {
+      background: rgba(255, 215, 0, 0.1);
+    }
+    .navbar-actions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+    .btn-navbar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+    }
+    .btn-navbar:hover {
+      transform: translateY(-1px);
+      color: white;
+    }
+    .btn-navbar:first-child {
+      background: linear-gradient(135deg, #10b981, #34d399);
+    }
+    .btn-navbar:last-child {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #ffd700;
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, rgba(15, 15, 15, 0.98), rgba(25, 25, 25, 0.95));
+      backdrop-filter: blur(25px);
+      border-top: 1px solid rgba(255, 215, 0, 0.2);
+      padding: 1rem;
+      z-index: 999;
+    }
+    
+    .mobile-nav.active {
+      display: block;
+    }
+    
+    .mobile-nav .nav-link {
+      display: block;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 10px;
+      text-align: center;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .main-container {
+        padding: 1.5rem;
+        padding-top: 100px;
+      }
+      
+      .search-header h1 {
+        font-size: 2.5rem;
+      }
+      
+      .search-header p {
+        font-size: 1.1rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .navbar-container {
+        padding: 0.75rem 1rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .navbar-nav {
+        display: none;
+      }
+      
+      .mobile-menu-toggle {
+        display: block;
+      }
+      
+      .navbar-brand {
+        font-size: 1.2rem;
+        padding: 0.4rem 0.8rem;
+      }
+      
+      .navbar-actions {
+        gap: 0.5rem;
+        padding: 0.4rem;
+      }
+      
+      .btn-navbar {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+      }
+      
+      .main-container {
+        padding: 1rem;
+        padding-top: 100px;
+      }
+      
+      .search-header {
+        padding: 2rem 0;
+      }
+      
+      .search-header h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      
+      .search-header p {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+      }
+      
+      .search-container {
+        padding: 1.5rem;
+      }
+      
+      .search-input {
+        font-size: 1rem;
+        padding: 1rem;
+      }
+      
+      .search-options {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .search-options-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .search-options-row > div {
+        width: 100%;
+      }
+      
+      .search-btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+      }
+      
+      .stats-bar {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      
+      .stat-item {
+        text-align: center;
+      }
+      
+      .results-container {
+        padding: 1rem;
+      }
+      
+      .result-item {
+        padding: 1rem;
+      }
+      
+      .result-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+      }
+      
+      .result-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .navbar-container {
+        flex-direction: row;
+        gap: 0.5rem;
+      }
+      
+      .navbar-brand {
+        order: 1;
+        flex: 1;
+        font-size: 1rem;
+      }
+      
+      .navbar-actions {
+        order: 2;
+        flex: 1;
+        justify-content: flex-end;
+      }
+      
+      .mobile-menu-toggle {
+        order: 3;
+      }
+      
+      .main-container {
+        padding: 0.5rem;
+        padding-top: 90px;
+      }
+      
+      .search-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .search-container {
+        padding: 1rem;
+      }
+      
+      .search-input {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+      }
+      
+      .search-btn {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+      }
+      
+      .stats-bar {
+        padding: 0.8rem;
+      }
+      
+      .stat-label {
+        font-size: 0.8rem;
+      }
+      
+      .stat-value {
+        font-size: 1.2rem;
+      }
+      
+      .results-container {
+        padding: 0.5rem;
+      }
+      
+      .result-item {
+        padding: 0.8rem;
+      }
+      
+      .result-content {
+        font-size: 0.9rem;
+      }
+    }
+    
+    @media (max-width: 320px) {
+      .navbar-brand {
+        font-size: 0.9rem;
+      }
+      
+      .btn-navbar {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+      }
+      
+      .search-header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .search-input {
+        font-size: 0.8rem;
+        padding: 0.7rem;
+      }
+      
+      .search-btn {
+        padding: 0.7rem;
+        font-size: 0.8rem;
+      }
+    }
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: 100vh;
+      padding-top: 120px;
+    }
+    .search-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      margin-top: 2rem;
+      animation: slideDown 0.8s ease-out;
+    }
+    .brand {
+      background: linear-gradient(135deg, #ffd700, #ffea80, #ffc107);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 1.2rem;
+      font-weight: 300;
+    }
+    .search-panel {
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 50px rgba(255, 215, 0, 0.1);
+      animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+    .search-options {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      align-items: end;
+    }
+    .form-group {
+      position: relative;
+    }
+    .form-label {
+      color: #ffd700;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .search-input {
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1.1rem;
+      padding: 1rem 1.5rem;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+    .search-input:focus {
+      background: rgba(25, 25, 25, 0.9);
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), inset 0 0 20px rgba(255, 215, 0, 0.1);
+      outline: none;
+      transform: translateY(-2px);
+    }
+    .form-select {
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 12px;
+      color: #fff;
+      padding: 0.75rem 1rem;
+      transition: all 0.3s ease;
+    }
+    .form-select:focus {
+      background: rgba(25, 25, 25, 0.9);
+      border-color: #ffd700;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+      outline: none;
+    }
+    .form-check {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0;
+    }
+    .form-check-input {
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 6px;
+    }
+    .form-check-input:checked {
+      background: #ffd700;
+      border-color: #ffd700;
+    }
+    .form-check-label {
+      color: #cbd5e1;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    .search-btn {
+      background: linear-gradient(135deg, #ffd700, #ffea80);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .search-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(255, 215, 0, 0.4);
+      background: linear-gradient(135deg, #ffea80, #ffd700);
+    }
+    .search-btn:active {
+      transform: translateY(-1px);
+    }
+    .search-btn:disabled {
+      opacity: 0.7;
+      transform: none;
+    }
+    .stats-bar {
+      background: rgba(15, 15, 15, 0.8);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      animation: fadeInUp 0.8s ease-out 0.4s both;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffd700;
+      display: block;
+    }
+    .stat-label {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .results-container {
+      animation: fadeInUp 0.8s ease-out 0.6s both;
+    }
+    .result-item {
+      background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(25, 25, 25, 0.8));
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-left: 5px solid #ffd700;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      animation: slideInLeft 0.6s ease-out;
+    }
+    .result-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.1);
+      border-color: rgba(255, 215, 0, 0.4);
+    }
+    .result-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #ffd700, transparent);
+    }
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .result-meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 20px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.8rem;
+      color: #ffd700;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .result-content {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      background: rgba(10, 10, 10, 0.5);
+      border-radius: 10px;
+      padding: 1rem;
+      border-left: 3px solid rgba(255, 215, 0, 0.3);
+      word-break: break-word;
+    }
+    .highlight {
+      background: linear-gradient(135deg, #ffd700, #ffea80);
+      color: #000;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      color: #94a3b8;
+      font-size: 1.2rem;
+    }
+    /* Upgrade prompt styles removed as requested */
+    /* Upgrade card styles removed as requested */
+    /* Pricing modal CSS removed - now using dedicated pricing page */
+    .pricing-alert {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.05));
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      animation: fadeInUp 0.6s ease-out;
+    }
+    .alert-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      color: #e2e8f0;
+      font-size: 1rem;
+    }
+    .alert-content i {
+      color: #3b82f6;
+      font-size: 1.2rem;
+    }
+    .pricing-link {
+      color: #60a5fa;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    .pricing-link:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+    /* Old pricing CSS removed - now using dedicated pricing page */
+    .crypto-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      font-size: 2rem;
+      color: #ffd700;
+    }
+    .payment-form {
+      background: rgba(15, 15, 15, 0.95);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2rem;
+      display: none;
+    }
+    .payment-form.active {
+      display: block;
+      animation: fadeInUp 0.5s ease;
+    }
+    .form-group-payment {
+      margin-bottom: 1.5rem;
+    }
+    .form-group-payment label {
+      display: block;
+      color: #ffd700;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .form-group-payment input,
+    .form-group-payment select {
+      width: 100%;
+      background: rgba(20, 20, 20, 0.8);
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 8px;
+      color: #fff;
+      padding: 0.8rem;
+      font-size: 1rem;
+    }
+    .form-group-payment input:focus,
+    .form-group-payment select:focus {
+      border-color: #ffd700;
+      outline: none;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    .admin-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 50px;
+      padding: 0.8rem 1.5rem;
+      color: #ffd700;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .admin-link:hover {
+      background: rgba(255, 215, 0, 0.2);
+      border-color: #ffd700;
+      transform: translateY(-2px);
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 20px rgba(255, 215, 0, 0.2); }
+      to { box-shadow: 0 0 30px rgba(255, 215, 0, 0.4); }
+    }
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 768px) {
+      .pricing-plans { grid-template-columns: 1fr; }
+      .crypto-options { grid-template-columns: repeat(2, 1fr); }
+      .pricing-content { padding: 2rem 1rem; }
+    }
+    .loader {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+      color: #ffd700;
+      font-size: 1.1rem;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 215, 0, 0.3);
+      border-top: 4px solid #ffd700;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    .error-message {
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      border-radius: 12px;
+      color: #fca5a5;
+      padding: 1rem;
+      text-align: center;
+      margin: 1rem 0;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @media (max-width: 768px) {
+      .brand { font-size: 2.5rem; }
+      .search-options { grid-template-columns: 1fr; }
+      .result-header { flex-direction: column; align-items: flex-start; }
+      .main-container { padding: 1rem; }
+    }
+    
+    /* Custom Bootstrap Alert Styles */
+    .alert {
+      background: rgba(15, 15, 15, 0.95);
+      border: 2px solid;
+      border-radius: 15px;
+      color: #f8fafc;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      font-size: 1rem;
+      animation: slideInDown 0.5s ease-out;
+    }
+    .alert-success {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+    }
+    .alert-warning {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+    }
+    .alert-danger {
+      border-color: rgba(239, 68, 68, 0.5);
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+    }
+    .alert-info {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+    }
+    .alert .fas {
+      color: inherit;
+    }
+    .alert-success .fas { color: #10b981; }
+    .alert-warning .fas { color: #f59e0b; }
+    .alert-danger .fas { color: #ef4444; }
+    .alert-info .fas { color: #3b82f6; }
+    
+    .btn-close {
+      filter: invert(1);
+      opacity: 0.7;
+    }
+    .btn-close:hover {
+      opacity: 1;
+    }
+    
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+    <!-- Horizontal Navbar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="index.php" class="navbar-brand">
+          <i class="fas fa-search"></i>
+          Logs Search
+        </a>
+        
+        <ul class="navbar-nav">
+          <li><a href="index.php" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="about.php" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+                    <li><a href="pricing.php" class="nav-link"><i class="fas fa-crown"></i> Pricing</a></li>
+                  </ul>
+        
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <div class="navbar-actions">
+                      <a href="login.php" class="btn-navbar">
+              <i class="fas fa-sign-in-alt"></i>
+              Login
+            </a>
+                  </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+      <a href="index.php" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+      <a href="about.php" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+            <a href="pricing.php" class="nav-link"><i class="fas fa-crown"></i> Pricing</a>
+          </div>
+
+  <div class="main-container">
+    <div class="search-header">
+
+
+      <h2 class="brand"><i class="fas fa-search"></i> Logs Search</h2>
+      <p class="subtitle">A smart search engine dedicated to browsing logs of more than +20 Info Stellar</p>
+    </div>
+
+    <div class="search-panel">
+      <form id="searchForm" onsubmit="return false;">
+        <div class="search-options">
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-keyboard"></i> Search Query</label>
+            <input id="q" name="q" maxlength="200" type="search" class="search-input" 
+                   placeholder="Enter your search terms..." autofocus>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-cog"></i> Search Type</label>
+            <select id="searchType" class="form-select">
+              <option value="contains">Contains</option>
+              <option value="exact">Exact Match</option>
+              <option value="starts_with">Starts With</option>
+              <option value="ends_with">Ends With</option>
+              <option value="regex">Regex</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-font"></i> Options</label>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="caseSensitive">
+              <label class="form-check-label" for="caseSensitive">Case Sensitive</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center">
+          <button id="searchBtn" class="search-btn">
+            <i class="fas fa-search"></i> Search Files
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Bootstrap Alert Container -->
+    <div id="alertContainer" class="container-fluid px-0 mb-3" style="display: none;">
+      <!-- Bootstrap alerts will be inserted here -->
+    </div>
+
+    <!-- Pricing Alert - Only show for non-logged-in users -->
+        <div class="pricing-alert">
+      <div class="alert-content">
+        <i class="fas fa-info-circle"></i>
+        <span>If you want to see more results and get many features, go to our <a href="pricing.php" class="pricing-link">pricing page</a> for unlimited access!</span>
+      </div>
+       <span style="color:white;">You can find leaked social media accounts, bank accounts, and many other things. <br> Link: Username: Password</span>
+        </div>
+    
+    <div id="statsBar" class="stats-bar" style="display: none;">
+      <div class="stat-item">
+        <span id="resultCount" class="stat-value">0</span>
+        <span class="stat-label">Results</span>
+      </div>
+      <div class="stat-item">
+        <span id="searchTime" class="stat-value">0ms</span>
+        <span class="stat-label">Search Time</span>
+      </div>
+    </div>
+
+    <div id="loader" class="loader" style="display: none;">
+      <div class="spinner"></div>
+      <span><i class="fas fa-cog fa-spin"></i> Searching through files...</span>
+    </div>
+
+    <div id="errorContainer"></div>
+    <div id="results" class="results-container"></div>
+  </div>
+
+
+
+<script>
+const qInput = document.getElementById('q');
+const resultsDiv = document.getElementById('results');
+const errorContainer = document.getElementById('errorContainer');
+const loader = document.getElementById('loader');
+const searchBtn = document.getElementById('searchBtn');
+const statsBar = document.getElementById('statsBar');
+const searchTypeSelect = document.getElementById('searchType');
+const caseSensitiveCheck = document.getElementById('caseSensitive');
+// defaultPricing removed - now using dedicated pricing page
+const paymentForm = document.getElementById('paymentForm');
+
+let hasSearched = false;
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+function highlight(text, term, searchType, caseSensitive) {
+  if (!term) return escapeHtml(text);
+  
+  try {
+    let regex;
+    const flags = caseSensitive ? 'g' : 'gi';
+    
+    switch (searchType) {
+      case 'exact':
+        const exactPattern = caseSensitive ? term : term.toLowerCase();
+        const textToCheck = caseSensitive ? text : text.toLowerCase();
+        if (textToCheck === exactPattern) {
+          return `<span class="highlight">${escapeHtml(text)}</span>`;
+        }
+        return escapeHtml(text);
+      
+      case 'starts_with':
+        regex = new RegExp(`^(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, flags);
+        break;
+        
+      case 'ends_with':
+        regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})$`, flags);
+        break;
+        
+      case 'regex':
+        regex = new RegExp(`(${term})`, flags);
+        break;
+        
+      default: // contains
+        regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, flags);
+        break;
+    }
+    
+    return escapeHtml(text).replace(regex, '<span class="highlight">$1</span>');
+  } catch (e) {
+    return escapeHtml(text);
+  }
+}
+
+function formatFileSize(bytes) {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+}
+
+function updateStats(data) {
+  document.getElementById('resultCount').textContent = data.count;
+  document.getElementById('searchTime').textContent = data.stats.search_time_ms + 'ms';
+  statsBar.style.display = 'block';
+}
+
+function showError(message) {
+  errorContainer.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-triangle"></i> ${escapeHtml(message)}</div>`;
+}
+
+function clearError() {
+  errorContainer.innerHTML = '';
+}
+
+// Bootstrap Alert Function
+function showBootstrapAlert(message, type = 'info', duration = 5000) {
+  const alertContainer = document.getElementById('alertContainer');
+  const alertId = 'alert-' + Date.now();
+  
+  // Create the alert HTML
+  const alertHtml = `
+    <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show" role="alert" style="margin: 0 2rem;">
+      <div class="d-flex align-items-center">
+        <i class="fas ${
+          type === 'success' ? 'fa-check-circle' :
+          type === 'warning' ? 'fa-exclamation-triangle' :
+          type === 'danger' ? 'fa-exclamation-circle' :
+          'fa-info-circle'
+        } me-2"></i>
+        <div class="flex-grow-1">${message}</div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  `;
+  
+  // Show the container and add the alert
+  alertContainer.style.display = 'block';
+  alertContainer.innerHTML = alertHtml;
+  
+  // Auto-hide after duration
+  if (duration > 0) {
+    setTimeout(() => {
+      const alertElement = document.getElementById(alertId);
+      if (alertElement) {
+        const bsAlert = new bootstrap.Alert(alertElement);
+        bsAlert.close();
+        
+        // Hide container if no more alerts
+        setTimeout(() => {
+          if (alertContainer.children.length === 0) {
+            alertContainer.style.display = 'none';
+          }
+        }, 300);
+      }
+    }, duration);
+  }
+}
+
+async function doSearch() {
+  const q = qInput.value.trim();
+  if (!q) {
+    showError('Please enter a search query.');
+    return;
+  }
+  
+  clearError();
+  resultsDiv.innerHTML = '';
+  statsBar.style.display = 'none';
+  loader.style.display = 'flex';
+  searchBtn.disabled = true;
+
+  const formData = new FormData();
+  formData.append('ajax', '1');
+  formData.append('q', q);
+  formData.append('search_type', searchTypeSelect.value);
+  formData.append('case_sensitive', caseSensitiveCheck.checked ? '1' : '0');
+
+  try {
+    const resp = await fetch('', { method: 'POST', body: formData });
+    const data = await resp.json();
+    
+    loader.style.display = 'none';
+    searchBtn.disabled = false;
+
+    if (data.status !== 'ok') {
+      showError(data.message || 'Search failed');
+      return;
+    }
+    
+    updateStats(data);
+
+    if (data.count === 0) {
+      resultsDiv.innerHTML = `
+        <div class="no-results">
+          <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+          <h3>No Results Found</h3>
+          <p>Try adjusting your search terms or search type.</p>
+        </div>`;
+      return;
+    }
+
+    const resultsHtml = data.results.map((result, index) => {
+      const highlightedContent = highlight(result.line, data.query, data.search_type, data.case_sensitive);
+      
+      return `
+        <div class="result-item" style="animation-delay: ${index * 0.1}s">
+          <div class="result-content">
+            ${highlightedContent}
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    resultsDiv.innerHTML = resultsHtml;
+    
+    // Upgrade prompt removed as requested
+
+  } catch (err) {
+    loader.style.display = 'none';
+    searchBtn.disabled = false;
+    showError(`Request failed: ${err.message}`);
+  }
+}
+
+// Event listeners
+searchBtn.addEventListener('click', () => {
+  doSearch();
+});
+qInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    doSearch();
+  }
+});
+
+// Auto-focus and placeholder rotation
+const placeholders = [
+  'Search for domains, emails, or keywords...',
+  'Try: example.com, user@domain.com, specific words...',
+  'Use regex for advanced patterns...',
+  'Search exact phrases or partial matches...'
+];
+
+let placeholderIndex = 0;
+setInterval(() => {
+  if (document.activeElement !== qInput && qInput.value === '') {
+    qInput.placeholder = placeholders[placeholderIndex];
+    placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+  }
+}, 3000);
+
+// Initialize
+qInput.focus();
+
+// Default pricing and payment functions
+function startFreeTrial() {
+  // Focus on search input
+  qInput.focus();
+  
+  // Show success alert
+  showBootstrapAlert(
+    '🎉 <strong>Welcome to Free Search!</strong><br>' +
+    'You can now search up to 50 results with basic search types. Start typing your query above!',
+    'success',
+    8000
+  );
+}
+
+function startProPurchase() {
+  // Redirect to payment page
+  window.location.href = 'payment.php';
+}
+
+function cancelPurchase() {
+  paymentForm.classList.remove('active');
+}
+
+// Handle purchase form submission
+document.getElementById('purchaseForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value;
+  const crypto = document.getElementById('cryptoSelect').value;
+  
+  if (!email || !crypto) {
+    showBootstrapAlert(
+      '<strong>Missing Information!</strong><br>Please fill in all fields before proceeding.',
+      'warning',
+      5000
+    );
+    return;
+  }
+  
+  const formData = new FormData();
+  formData.append('create_payment', '1');
+  formData.append('email', email);
+  formData.append('crypto', crypto);
+  
+  try {
+    const resp = await fetch('', { method: 'POST', body: formData });
+    const data = await resp.json();
+    
+    if (data.status === 'success') {
+      window.location.href = data.redirect;
+    } else {
+      showBootstrapAlert(
+        '<strong>Payment Error!</strong><br>' + (data.message || 'Unknown error occurred'),
+        'danger',
+        8000
+      );
+    }
+  } catch (err) {
+    showBootstrapAlert(
+      '<strong>Connection Error!</strong><br>Request failed: ' + err.message,
+      'danger',
+      8000
+    );
+  }
+});
+
+// Pricing functions removed - now using dedicated pricing page
+</script>
+
+<script>
+  // Mobile menu toggle
+  function toggleMobileMenu() {
+    const mobileNav = document.getElementById('mobileNav');
+    mobileNav.classList.toggle('active');
+  }
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const mobileNav = document.getElementById('mobileNav');
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    
+    if (!mobileNav.contains(event.target) && !mobileToggle.contains(event.target)) {
+      mobileNav.classList.remove('active');
+    }
+  });
+  
+  // Close mobile menu when window is resized
+  window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+      document.getElementById('mobileNav').classList.remove('active');
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

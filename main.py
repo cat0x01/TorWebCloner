@@ -4,15 +4,18 @@ import requests
 from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 from colorama import Fore, init
+
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.service import Service
 
 init(autoreset=True)
 
 os.system("sudo service tor start")
 
-
-# Tor proxy
+# =========================
+# TOR PROXY
+# =========================
 proxies = {
     "http": "socks5h://127.0.0.1:9050",
     "https": "socks5h://127.0.0.1:9050"
@@ -20,21 +23,22 @@ proxies = {
 
 visited = set()
 
-# ----------------------------
+# =========================
 def banner():
     print(Fore.RED + "=" * 50)
-    print(Fore.YELLOW + " SIMPLE TOR TOOL ")
+    print(Fore.YELLOW + " TorSiteTool ")
     print(Fore.CYAN + " 1) Copy site")
     print(Fore.CYAN + " 2) Screenshot site")
     print(Fore.RED + "=" * 50)
 
-# ----------------------------
-def clean_name(name):
-    return re.sub(r"[^a-zA-Z0-9_.-]", "_", name)
+# =========================
+def clean_name(text):
+    return re.sub(r"[^a-zA-Z0-9_.-]", "_", text)
 
-# ----------------------------
+# =========================
 def save_file(url, content, folder):
     path = urlparse(url).path
+
     if path == "" or path.endswith("/"):
         path += "index.html"
 
@@ -48,7 +52,7 @@ def save_file(url, content, folder):
 
     print(Fore.GREEN + f"[+] Saved: {full_path}")
 
-# ----------------------------
+# =========================
 def copy_site(url, folder, depth=0, max_depth=2):
     if url in visited or depth > max_depth:
         return
@@ -56,7 +60,7 @@ def copy_site(url, folder, depth=0, max_depth=2):
     visited.add(url)
 
     try:
-        r = requests.get(url, proxies=proxies, timeout=20)
+        r = requests.get(url, proxies=proxies, timeout=25)
     except Exception as e:
         print(Fore.RED + f"[!] Error: {e}")
         return
@@ -71,36 +75,41 @@ def copy_site(url, folder, depth=0, max_depth=2):
     for tag in soup.find_all(["a", "link", "script", "img"]):
         attr = "href" if tag.name in ["a", "link"] else "src"
         link = tag.get(attr)
+
         if not link:
             continue
 
-        full = urljoin(url, link)
+        full_url = urljoin(url, link)
 
-        if urlparse(full).netloc == urlparse(url).netloc:
-            copy_site(full, folder, depth + 1)
+        if urlparse(full_url).netloc == urlparse(url).netloc:
+            copy_site(full_url, folder, depth + 1)
 
-# ----------------------------
+# =========================
 def screenshot_site(url):
     options = Options()
     options.headless = True
+
+    # TOR SETTINGS
     options.set_preference("network.proxy.type", 1)
     options.set_preference("network.proxy.socks", "127.0.0.1")
     options.set_preference("network.proxy.socks_port", 9050)
     options.set_preference("network.proxy.socks_remote_dns", True)
 
-    driver = webdriver.Firefox(options=options)
+    service = Service("/usr/bin/geckodriver")
+
+    driver = webdriver.Firefox(service=service, options=options)
     driver.set_window_size(1366, 768)
 
-    print(Fore.BLUE + "[i] Opening site...")
+    print(Fore.BLUE + "[i] Opening site via Tor...")
     driver.get(url)
 
-    name = clean_name(urlparse(url).netloc) + ".png"
-    driver.save_screenshot(name)
+    filename = clean_name(urlparse(url).netloc) + ".png"
+    driver.save_screenshot(filename)
 
-    print(Fore.GREEN + f"[✓] Screenshot saved: {name}")
+    print(Fore.GREEN + f"[✓] Screenshot saved: {filename}")
     driver.quit()
 
-# ----------------------------
+# =========================
 def main():
     banner()
 
@@ -114,14 +123,14 @@ def main():
         folder = clean_name(urlparse(target).netloc)
         print(Fore.BLUE + f"[i] Copying site to folder: {folder}")
         copy_site(target, folder)
-        print(Fore.GREEN + "[✓] Site copied")
+        print(Fore.GREEN + "[✓] Copy finished")
 
     elif choice == "2":
         screenshot_site(target)
 
     else:
-        print(Fore.RED + "Invalid option")
+        print(Fore.RED + "[!] Invalid option")
 
-# ----------------------------
+# =========================
 if __name__ == "__main__":
     main()
